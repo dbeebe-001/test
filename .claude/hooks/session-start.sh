@@ -16,7 +16,7 @@ ORG_ID="00DWs00000RvBGwMAN"                       # laulima26
 SF_INSTANCE="https://arm-laulima26.my.salesforce.com"
 SF_CID="3MVG9aNlkJwuH9vMEsO2epkfN6RM6elAc6dccI9bAelhkXZ_vZfVMKgnA.oIBM41cZJNIdG8CB6FbmOTTwe41"
 SF_MCP_BASES="https://api.salesforce.com/platform/mcp/v1,https://test.api.salesforce.com/platform/mcp/v1"
-SF_MCP_SERVERS="industries/revenue-cloud,custom/rampdealsconnect"
+SF_MCP_SERVERS="industries/revenue-cloud"
 RAMP_AUTH_DIR="$HOME/.ramp-mcp-state/$ORG_ID"
 mkdir -p "$RAMP_AUTH_DIR"
 
@@ -96,6 +96,9 @@ else
 fi
 
 # 4. Write .mcp.json at the project root (never committed — see .gitignore).
+# NOTE: mcp_multiplex_proxy.py is still the script here (it's the only proxy this kit ships),
+# but SF_MCP_SERVERS above pins it to the single standard server — no custom/rampdealsconnect
+# upstream is ever opened, so there is nothing left to multiplex.
 PY3="$(command -v python3)"
 cat > "$CLAUDE_PROJECT_DIR/.mcp.json" <<JSON
 {
