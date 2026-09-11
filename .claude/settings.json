@@ -10,5 +10,26 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__RC_Learning_Labs__soqlQuery",
+      "mcp__RC_Learning_Labs__searchRecords",
+      "mcp__RC_Learning_Labs__createSalesTransaction",
+      "mcp__RC_Learning_Labs__addLines",
+      "mcp__RC_Learning_Labs__updateLines",
+      "mcp__RC_Learning_Labs__deleteLines",
+      "mcp__RC_Learning_Labs__repriceSalesTransaction",
+      "mcp__RC_Learning_Labs__createOrdersFromQuote",
+      "mcp__RC_Learning_Labs__orderToAsset",
+      "mcp__RC_Learning_Labs__activateOrder",
+      "mcp__RC_Learning_Labs__amendAssets",
+      "mcp__RC_Learning_Labs__renewAssets",
+      "mcp__RC_Learning_Labs__cancelAssets",
+      "mcp__RC_Learning_Labs__submitForApproval",
+      "mcp__RC_Learning_Labs__reviewApprovalWorkItem",
+      "mcp__RC_Learning_Labs__recallApprovalSubmission",
+      "mcp__RC_Learning_Labs__importCatalogProducts"
+    ]
   }
 }
