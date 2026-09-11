@@ -1,6 +1,6 @@
-# CLAUDE.md — Ramp-quote workspace (laulima26, cloud session)
+# CLAUDE.md — Ramp-quote workspace (rclearninglabs, cloud session)
 
-Revenue Cloud ramp-quote demos on **laulima26**, running conversationally from a Claude Code
+Revenue Cloud ramp-quote demos on **rclearninglabs**, running conversationally from a Claude Code
 on the web session. This repo root stands in for the `demos/cohort/` folder in
 [bgaldino/ramp-demo-kit](https://github.com/bgaldino/ramp-demo-kit) — a `SessionStart` hook
 (`.claude/hooks/session-start.sh`) clones that kit into the container, mints an MCP access
@@ -57,39 +57,42 @@ Do NOT narrate the read as confirming/matching anything — see *How to talk* be
 
 ### Fast path — pre-resolved ids (cohort)
 
-**Verified on `laulima26` 2026-08-06** — both quotes built live and read back at the expected
-economics: 3-yr `0Q0Ws000009RgpBKAS` (3 lines, 50000/45000/42500, TCV **$282,500**), 4-yr
-`0Q0Ws000009RgqnKAC` (4 lines, 25000/23750/22500/21250, TCV **$237,500**).
+**Resolved on `rclearninglabs` 2026-09-11** by natural key (account name, SKU, `IsStandard`) —
+not yet build-verified from a conversational session (this repo's own `revenue-cloud` connector
+was still pointed at the prior org when these were resolved; connectors don't hot-reload, so the
+first ramp build after this repoint is what actually earns a "verified" banner). The Acme account,
+its `MomentumCallNotes__c` text, and the Lumenix Scale SKU all match this workspace's expected
+shape — 3-yr TCV should still land at **$282,500** and 4-yr at **$237,500** once built (see the
+self-check below).
 
 ⚠ **The discount field is `discountPercent`, not `discount`.** This corrects the upstream kit's
-own primer, which has it backwards for this org's current API version — verified live from this
-cloud session on 2026-09-11: `discount` gets rejected outright
-(`JSON_PARSER_ERROR: Unrecognized field "discount"`) by both `createSalesTransaction` and
-`addLines` on `industries/revenue-cloud` here, while the tool's actual input schema (confirmed via
-the primed tool-list cache) defines `discountPercent` (0-100, e.g. 10 = 10% off) and
-`discountAmountPerUnit` as the two valid discount fields — mutually exclusive, use
-`discountPercent`. A rejected line is *skipped, not fatal*: the quote builds with fewer lines and
-the totals silently come out low. **Always check the line count** (3 lines for the 3-yr quote, 4
-for the 4-yr) before presenting — if it's short, a line got silently dropped.
+own primer, which has it backwards for this org's current API version — confirmed against this
+org's live `createSalesTransaction` input schema on 2026-09-11: it defines `discountPercent`
+(0-100, e.g. 10 = 10% off) and `discountAmountPerUnit` as the two valid discount fields — mutually
+exclusive, use `discountPercent`. `discount` gets rejected outright
+(`JSON_PARSER_ERROR: Unrecognized field "discount"`) on this API version. A rejected line is
+*skipped, not fatal*: the quote builds with fewer lines and the totals silently come out low.
+**Always check the line count** (3 lines for the 3-yr quote, 4 for the 4-yr) before presenting —
+if it's short, a line got silently dropped.
 
-| Thing | laulima26 id | Notes |
+| Thing | rclearninglabs id | Notes |
 |---|---|---|
-| Acme account | `001Ws00005vw5s0IAA` | has `MomentumCallNotes__c`. Use as `accountId`. |
-| Lumenix Scale (`SUB-LMX-002`) | Product2 `01tWs00000Fxt33IAB` | $500/user/yr. Use as `productId`. |
-| PricebookEntry ($500) | `01uWs000006juYrIAI` | Standard Price Book `01sWs000003beSzIAI` |
-| Selling model | `0jPWs000000hI1iMAE` | Term Annual, TermDefined 1/Annual (via ProductSellingModelOption) |
+| Acme account | `001Wt00001izoMxIAI` | has `MomentumCallNotes__c`. Use as `accountId`. |
+| Lumenix Scale (`SUB-LMX-002`) | Product2 `01tWt00000FCmMnIAL` | $500/user/yr. Use as `productId`. |
+| PricebookEntry ($500) | `01uWt000005khWvIAI` | Standard Price Book `01sWt0000027MyjIAE` |
+| Selling model | `0jPWt000000Vge6MAC` | Term Annual (via ProductSellingModelOption) |
 | MCP server | standard `industries/revenue-cloud` | inline `products`; NO custom standup, NO groupRampAction |
-| Org alias | `laulima26` — WRITE here | |
+| Org alias | `rclearninglabs` — WRITE here | |
 
 ### Build recipe — ONE `createSalesTransaction` per quote (cohort)
 
 All cohort lines go inline in `products`, so a whole quote = 1 call (do NOT use separate `addLines`):
 ```
 {type:"Quote",                        // REQUIRED — omit → "type must be 'Quote' or 'Order'"
- accountId:"001Ws00005vw5s0IAA",
+ accountId:"001Wt00001izoMxIAI",
  name:"Acme Momentum - Lumenix Scale - 3-Year Ramp",
  products:[                           // one cohort per year, ALL inline
-   {productId:"01tWs00000Fxt33IAB", quantity:100, unitPrice:500,   // unitPrice REQUIRED (else $50 default)
+   {productId:"01tWt00000FCmMnIAL", quantity:100, unitPrice:500,   // unitPrice REQUIRED (else $50 default)
     startDate:"2026-10-01", endDate:"2029-09-30",                  // co-term end shared by ALL cohorts
     subscriptionTerm:12, pricingTermUnit:"Months"},                // year-1 base: NO discount
    {…, startDate:"2027-10-01", endDate:"2029-09-30", discountPercent:10},
@@ -229,7 +232,7 @@ a test.
 
 ## Clean up after a run
 
-Quotes created here are real Draft records in `laulima26`. Delete via the MCP connector's
+Quotes created here are real Draft records in `rclearninglabs`. Delete via the MCP connector's
 `soqlQuery`/data tools, or ask this session to do it — there's no local `sf` CLI in this
 container's cleanup path.
 

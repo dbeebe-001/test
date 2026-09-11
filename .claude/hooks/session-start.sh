@@ -12,9 +12,9 @@ if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
 fi
 
 KIT_DIR="$HOME/ramp-demo-kit"
-ORG_ID="00DWs00000RvBGwMAN"                       # laulima26
-SF_INSTANCE="https://arm-laulima26.my.salesforce.com"
-SF_CID="3MVG9aNlkJwuH9vMEsO2epkfN6RM6elAc6dccI9bAelhkXZ_vZfVMKgnA.oIBM41cZJNIdG8CB6FbmOTTwe41"
+ORG_ID="00DWt00000Mmkf0MAB"                       # rclearninglabs
+SF_INSTANCE="https://trailsignup-b906a7ff53c2ff.my.salesforce.com"
+SF_CID="3MVG9azVmavckRRQd4O7SjnRnMwQzHR_vS6tUlyuM_FxQAxkYp7YtL436MKnZa46K80bfiQkL5Txgofm4_ZAk"
 SF_MCP_BASES="https://api.salesforce.com/platform/mcp/v1,https://test.api.salesforce.com/platform/mcp/v1"
 SF_MCP_SERVERS="industries/revenue-cloud"
 RAMP_AUTH_DIR="$HOME/.ramp-mcp-state/$ORG_ID"
